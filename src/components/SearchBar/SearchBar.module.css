@@ -25,7 +25,7 @@
 
 .inputWrapper {
   position: relative;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.75rem;
 }
 
 .searchIcon {
@@ -59,6 +59,7 @@
 }
 
 .frequencySection {
+  padding-top: 0.25rem;
   margin-bottom: 1.25rem;
 }
 
@@ -113,9 +114,9 @@
 }
 
 .suggestedSection {
-  margin-top: 1.25rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e5e5e5;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .suggestedLabel {

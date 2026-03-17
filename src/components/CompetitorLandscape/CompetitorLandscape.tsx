@@ -52,6 +52,14 @@ function calculatePosition(comp: Competitor, index: number, total: number): { x:
   return { x: Math.min(82, Math.max(18, baseX)), y: Math.min(80, Math.max(20, y)) };
 }
 
+const defaultMomentum = {
+  icon: <Minus size={14} />,
+  label: "Stable",
+  color: COLORS.gray[500],
+  bg: COLORS.gray[100],
+  dotColor: "#ffa500",
+};
+
 const CompetitorLandscape: React.FC<CompetitorLandscapeProps> = ({ competitors }) => {
   const sorted = [...competitors].sort((a, b) => {
     const order = { rising: 0, stable: 1, declining: 2 };
@@ -105,7 +113,7 @@ const CompetitorLandscape: React.FC<CompetitorLandscapeProps> = ({ competitors }
         </div>
 
         {positions.map((comp) => {
-          const mConfig = momentumConfig[comp.momentum];
+          const mConfig = momentumConfig[comp.momentum] || defaultMomentum;
           return (
             <div
               key={comp.name}
@@ -134,7 +142,7 @@ const CompetitorLandscape: React.FC<CompetitorLandscapeProps> = ({ competitors }
       </h4>
       <div className={styles.grid}>
         {sorted.map((comp) => {
-          const mConfig = momentumConfig[comp.momentum];
+          const mConfig = momentumConfig[comp.momentum] || defaultMomentum;
           return (
             <div key={comp.name} className={styles.competitorCard}>
               <div className={styles.cardHeader}>

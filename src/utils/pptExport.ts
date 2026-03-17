@@ -50,7 +50,7 @@ function addSlideWithBg(pptx: PptxGenJS): PptxGenJS.Slide {
   return slide;
 }
 
-export function generateNewsletterPPT(newsletter: Newsletter): void {
+export async function generateNewsletterPPT(newsletter: Newsletter): Promise<void> {
   const pptx = new PptxGenJS();
   pptx.layout = "LAYOUT_WIDE";
   pptx.author = "News Intelligence — Emerson Collective";
@@ -267,11 +267,11 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
     // Table header
     const tableRows: PptxGenJS.TableRow[] = [
       [
-        { text: "Company", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 11, fontFace: "Helvetica" } },
-        { text: "Description", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 11, fontFace: "Helvetica" } },
-        { text: "Momentum", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 11, fontFace: "Helvetica" } },
-        { text: "Funding", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 11, fontFace: "Helvetica" } },
-        { text: "Stage", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 11, fontFace: "Helvetica" } },
+        { text: "Company", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 12, fontFace: "Helvetica", valign: "middle" } },
+        { text: "Description", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 12, fontFace: "Helvetica", valign: "middle" } },
+        { text: "Momentum", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 12, fontFace: "Helvetica", valign: "middle" } },
+        { text: "Funding", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 12, fontFace: "Helvetica", valign: "middle" } },
+        { text: "Stage", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 12, fontFace: "Helvetica", valign: "middle" } },
       ],
     ];
 
@@ -279,21 +279,21 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
       const bgColor = i % 2 === 0 ? WHITE : BG;
       const momentumColor = c.momentum === "rising" ? GREEN : c.momentum === "declining" ? PRIMARY : GRAY;
       tableRows.push([
-        { text: c.name, options: { bold: true, fontSize: 10, fontFace: "Helvetica", color: BLACK, fill: { color: bgColor } } },
-        { text: c.description, options: { fontSize: 9, fontFace: "Helvetica", color: GRAY, fill: { color: bgColor } } },
-        { text: c.momentum.charAt(0).toUpperCase() + c.momentum.slice(1), options: { fontSize: 10, fontFace: "Helvetica", color: momentumColor, bold: true, fill: { color: bgColor } } },
-        { text: c.funding, options: { fontSize: 10, fontFace: "Helvetica", color: BLACK, fill: { color: bgColor } } },
-        { text: c.stage, options: { fontSize: 10, fontFace: "Helvetica", color: BLACK, fill: { color: bgColor } } },
+        { text: c.name, options: { bold: true, fontSize: 11, fontFace: "Helvetica", color: BLACK, fill: { color: bgColor }, valign: "middle" } },
+        { text: c.description, options: { fontSize: 10, fontFace: "Helvetica", color: GRAY, fill: { color: bgColor }, valign: "middle" } },
+        { text: c.momentum.charAt(0).toUpperCase() + c.momentum.slice(1), options: { fontSize: 11, fontFace: "Helvetica", color: momentumColor, bold: true, fill: { color: bgColor }, valign: "middle" } },
+        { text: c.funding, options: { fontSize: 11, fontFace: "Helvetica", color: BLACK, fill: { color: bgColor }, valign: "middle" } },
+        { text: c.stage, options: { fontSize: 11, fontFace: "Helvetica", color: BLACK, fill: { color: bgColor }, valign: "middle" } },
       ]);
     });
 
     compSlide.addTable(tableRows, {
-      x: 0.6,
+      x: 0.4,
       y: 1.2,
-      w: 8.8,
+      w: 12.2,
       border: { type: "solid", pt: 0.5, color: LIGHT_GRAY },
-      colW: [1.5, 3.2, 1.2, 1.5, 1.4],
-      rowH: 0.45,
+      colW: [2.0, 5.0, 1.6, 1.8, 1.8],
+      rowH: 0.6,
     });
   }
 
@@ -367,7 +367,8 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
     const ccSlide = addSlideWithBg(pptx);
     addTitleBar(ccSlide, "Consensus vs. Contrarian Views");
 
-    const colW = 4.2;
+    const colW = 5.8;
+    const colRight = 0.6 + colW + 0.25;
 
     // Consensus header
     ccSlide.addText("CONSENSUS", {
@@ -382,20 +383,20 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
     });
 
     newsletter.consensus.forEach((v, i) => {
-      const yStart = 1.6 + i * 1.0;
+      const yStart = 1.6 + i * 1.35;
       ccSlide.addShape("rect", {
         x: 0.6,
         y: yStart,
         w: colW,
-        h: 0.85,
+        h: 1.15,
         fill: { color: "EFF6FF" },
         rectRadius: 0.05,
       });
       ccSlide.addText(v.title, {
         x: 0.75,
-        y: yStart + 0.05,
+        y: yStart + 0.08,
         w: colW - 0.3,
-        h: 0.25,
+        h: 0.3,
         fontSize: 11,
         fontFace: "Helvetica",
         bold: true,
@@ -403,19 +404,20 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
       });
       ccSlide.addText(v.description, {
         x: 0.75,
-        y: yStart + 0.32,
+        y: yStart + 0.4,
         w: colW - 0.3,
-        h: 0.5,
+        h: 0.65,
         fontSize: 9,
         fontFace: "Helvetica",
         color: GRAY,
-        lineSpacingMultiple: 1.2,
+        lineSpacingMultiple: 1.3,
+        valign: "top",
       });
     });
 
     // Contrarian header
     ccSlide.addText("CONTRARIAN", {
-      x: 5.2,
+      x: colRight,
       y: 1.15,
       w: colW,
       h: 0.35,
@@ -426,34 +428,35 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
     });
 
     newsletter.contrarian.forEach((v, i) => {
-      const yStart = 1.6 + i * 1.0;
+      const yStart = 1.6 + i * 1.35;
       ccSlide.addShape("rect", {
-        x: 5.2,
+        x: colRight,
         y: yStart,
         w: colW,
-        h: 0.85,
+        h: 1.15,
         fill: { color: "FFFBEB" },
         rectRadius: 0.05,
       });
       ccSlide.addText(v.title, {
-        x: 5.35,
-        y: yStart + 0.05,
+        x: colRight + 0.15,
+        y: yStart + 0.08,
         w: colW - 0.3,
-        h: 0.25,
+        h: 0.3,
         fontSize: 11,
         fontFace: "Helvetica",
         bold: true,
         color: BLACK,
       });
       ccSlide.addText(v.description, {
-        x: 5.35,
-        y: yStart + 0.32,
+        x: colRight + 0.15,
+        y: yStart + 0.4,
         w: colW - 0.3,
-        h: 0.5,
+        h: 0.65,
         fontSize: 9,
         fontFace: "Helvetica",
         color: GRAY,
-        lineSpacingMultiple: 1.2,
+        lineSpacingMultiple: 1.3,
+        valign: "top",
       });
     });
   }
@@ -464,8 +467,8 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
     const topSlide = addSlideWithBg(pptx);
     addTitleBar(topSlide, "Top Insights");
 
-    const colW = 2.8;
-    const gap = 0.2;
+    const colW = 3.8;
+    const gap = 0.25;
     const categories = [
       { title: "KEY PEOPLE", items: newsletter.topPeople, x: 0.6 },
       { title: "KEY PRODUCTS", items: newsletter.topProducts, x: 0.6 + colW + gap },
@@ -485,22 +488,22 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
       });
 
       cat.items.slice(0, 4).forEach((item, i) => {
-        const yStart = 1.6 + i * 1.05;
+        const yStart = 1.6 + i * 1.25;
 
         topSlide.addShape("rect", {
           x: cat.x,
           y: yStart,
           w: colW,
-          h: 0.9,
+          h: 1.1,
           fill: { color: BG },
           rectRadius: 0.05,
         });
 
         topSlide.addText(item.name, {
-          x: cat.x + 0.12,
-          y: yStart + 0.05,
-          w: colW - 0.24,
-          h: 0.25,
+          x: cat.x + 0.15,
+          y: yStart + 0.08,
+          w: colW - 0.3,
+          h: 0.28,
           fontSize: 11,
           fontFace: "Helvetica",
           bold: true,
@@ -508,14 +511,15 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
         });
 
         topSlide.addText(item.detail, {
-          x: cat.x + 0.12,
-          y: yStart + 0.32,
-          w: colW - 0.24,
-          h: 0.5,
-          fontSize: 8.5,
+          x: cat.x + 0.15,
+          y: yStart + 0.38,
+          w: colW - 0.3,
+          h: 0.62,
+          fontSize: 9,
           fontFace: "Helvetica",
           color: GRAY,
-          lineSpacingMultiple: 1.2,
+          lineSpacingMultiple: 1.3,
+          valign: "top",
         });
       });
     });
@@ -531,9 +535,9 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
     addTitleBar(srcSlide, "Sources");
 
     const headerRow: PptxGenJS.TableRow = [
-      { text: "#", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 9, fontFace: "Helvetica", align: "center" } },
-      { text: "Title", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 9, fontFace: "Helvetica" } },
-      { text: "Source", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 9, fontFace: "Helvetica" } },
+      { text: "#", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 10, fontFace: "Helvetica", align: "center", valign: "middle" } },
+      { text: "Title", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 10, fontFace: "Helvetica", valign: "middle" } },
+      { text: "Source", options: { bold: true, color: WHITE, fill: { color: PRIMARY }, fontSize: 10, fontFace: "Helvetica", valign: "middle" } },
     ];
 
     const srcRows: PptxGenJS.TableRow[] = [headerRow];
@@ -545,34 +549,35 @@ export function generateNewsletterPPT(newsletter: Newsletter): void {
       const bgColor = (i - start) % 2 === 0 ? WHITE : BG;
       const hasUrl = s.url && s.url !== "#";
       srcRows.push([
-        { text: `${i + 1}`, options: { fontSize: 8, fontFace: "Helvetica", color: GRAY, fill: { color: bgColor }, align: "center" } },
+        { text: `${i + 1}`, options: { fontSize: 9, fontFace: "Helvetica", color: GRAY, fill: { color: bgColor }, align: "center", valign: "middle" } },
         {
           text: s.title,
           options: {
-            fontSize: 8,
+            fontSize: 9,
             fontFace: "Helvetica",
             color: hasUrl ? "2563EB" : BLACK,
             fill: { color: bgColor },
             underline: { style: hasUrl ? "sng" as const : "none" as const },
             hyperlink: hasUrl ? { url: s.url } : undefined,
+            valign: "middle",
           },
         },
-        { text: s.type, options: { fontSize: 8, fontFace: "Helvetica", color: GRAY, fill: { color: bgColor } } },
+        { text: s.type, options: { fontSize: 9, fontFace: "Helvetica", color: GRAY, fill: { color: bgColor }, valign: "middle" } },
       ]);
     }
 
     srcSlide.addTable(srcRows, {
       x: 0.6,
       y: 1.2,
-      w: 8.8,
+      w: 9.0,
       border: { type: "solid", pt: 0.5, color: LIGHT_GRAY },
-      colW: [0.5, 6.3, 2.0],
-      rowH: 0.4,
+      colW: [0.6, 6.2, 2.2],
+      rowH: 0.55,
     });
   }
 
   // ========== Save ==========
   const slug = newsletter.topic.toLowerCase().replace(/\s+/g, "-");
   const date = new Date().toISOString().split("T")[0];
-  pptx.writeFile({ fileName: `${slug}-intelligence-${date}.pptx` });
+  await pptx.writeFile({ fileName: `${slug}-intelligence-${date}.pptx` });
 }

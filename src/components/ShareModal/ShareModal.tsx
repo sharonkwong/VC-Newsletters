@@ -180,7 +180,7 @@ export default function ShareModal({ topic, frequency, newsletter, onClose }: Sh
             style={{ color: copied ? COLORS.status.success : COLORS.gray[600] }}
           >
             <Link2 size={14} />
-            {copied ? "Link copied!" : "Copy link to this newsletter"}
+            {copied ? "Copied!" : "Copy link to this newsletter"}
           </button>
 
           <hr className={styles.divider} />

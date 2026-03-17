@@ -30,12 +30,19 @@ const trendConfig = {
   },
 };
 
+const defaultTrend = {
+  icon: <TrendingUp size={12} />,
+  label: "Growing",
+  color: COLORS.status.success,
+  bg: COLORS.status.successBg,
+};
+
 const EmergingCompanies: React.FC<EmergingCompaniesProps> = ({ companies }) => {
   return (
     <SectionCard title="Emerging Companies" icon={<Star size={20} />}>
       <div className={styles.grid}>
         {companies.map((company) => {
-          const trend = trendConfig[company.mentionTrend];
+          const trend = trendConfig[company.mentionTrend] || defaultTrend;
           return (
             <div key={company.name} className={styles.card}>
               <div className={styles.cardHeader}>

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Download, Share2, ChevronDown, FileText, Image, FileSpreadsheet } from "lucide-react";
+import { Download, Share2, ChevronDown, FileText, Image, FileSpreadsheet, Loader2 } from "lucide-react";
 import ShareModal from "../ShareModal/ShareModal";
 import { formatDateInTimezone } from "../../utils/timezone";
 import ExecutiveSummary from "../ExecutiveSummary/ExecutiveSummary";
@@ -37,6 +37,7 @@ export function SummaryView({ summary, onFrequencyChange, savedNotes = [], onDel
   const [currentFreq, setCurrentFreq] = useState(summary.frequency);
   const [shareOpen, setShareOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const exportRef = useRef<HTMLDivElement>(null);
 
@@ -66,12 +67,17 @@ export function SummaryView({ summary, onFrequencyChange, savedNotes = [], onDel
 
   const handleExport = async (format: "pdf" | "ppt" | "screenshot") => {
     setExportOpen(false);
-    if (format === "pdf") {
-      generateNewsletterPDF(summary);
-    } else if (format === "ppt") {
-      generateNewsletterPPT(summary);
-    } else {
-      await generateScreenshot(summary.topic);
+    setExporting(true);
+    try {
+      if (format === "pdf") {
+        await generateNewsletterPDF(summary);
+      } else if (format === "ppt") {
+        await generateNewsletterPPT(summary);
+      } else {
+        await generateScreenshot(summary.topic);
+      }
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -120,12 +126,13 @@ export function SummaryView({ summary, onFrequencyChange, savedNotes = [], onDel
           <div className={styles.exportDropdown} ref={exportRef}>
             <button
               className={styles.actionBtn}
-              onClick={() => setExportOpen(!exportOpen)}
-              style={{ backgroundColor: COLORS.primary, color: COLORS.white }}
+              onClick={() => !exporting && setExportOpen(!exportOpen)}
+              disabled={exporting}
+              style={{ backgroundColor: COLORS.primary, color: COLORS.white, opacity: exporting ? 0.8 : 1 }}
             >
-              <Download size={14} />
-              Export
-              <ChevronDown size={12} />
+              {exporting ? <Loader2 size={14} className={styles.spinner} /> : <Download size={14} />}
+              {exporting ? "Exporting..." : "Export"}
+              {!exporting && <ChevronDown size={12} />}
             </button>
             {exportOpen && (
               <div className={styles.exportMenu}>

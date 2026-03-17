@@ -2,7 +2,6 @@ export interface Source {
   title: string;
   url: string;
   type: string;
-  views: string;
   trending: boolean;
   publishedDate?: string;
 }

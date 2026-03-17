@@ -49,6 +49,25 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           />
         </div>
 
+        <div className={styles.suggestedSection}>
+          <p className={styles.suggestedLabel} style={{ color: COLORS.gray[500] }}>
+            Suggested topics:
+          </p>
+          <div className={styles.chips}>
+            {SUGGESTED_TOPICS.map((topic) => (
+              <button
+                key={topic}
+                type="button"
+                className={styles.chip}
+                onClick={() => handleChipClick(topic)}
+                style={{ fontFamily: FONTS.body, color: COLORS.gray[700] }}
+              >
+                {topic}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className={styles.frequencySection}>
           <p className={styles.frequencyLabel} style={{ color: COLORS.black }}>Update Frequency</p>
           <div className={styles.frequencyButtons}>
@@ -83,25 +102,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           Generate Intelligence Report
         </button>
       </form>
-
-      <div className={styles.suggestedSection}>
-        <p className={styles.suggestedLabel} style={{ color: COLORS.gray[500] }}>
-          Suggested topics:
-        </p>
-        <div className={styles.chips}>
-          {SUGGESTED_TOPICS.map((topic) => (
-            <button
-              key={topic}
-              type="button"
-              className={styles.chip}
-              onClick={() => handleChipClick(topic)}
-              style={{ fontFamily: FONTS.body, color: COLORS.gray[700] }}
-            >
-              {topic}
-            </button>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };

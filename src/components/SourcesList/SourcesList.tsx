@@ -1,5 +1,5 @@
 import React from "react";
-import { Globe, ExternalLink, Eye, ArrowUpRight } from "lucide-react";
+import { Globe, ExternalLink, ArrowUpRight } from "lucide-react";
 import { COLORS, FONTS } from "../../constants/constants";
 import type { Source } from "../../types/types";
 import SectionCard from "../SectionCard/SectionCard";
@@ -37,10 +37,6 @@ const SourcesList: React.FC<SourcesListProps> = ({ sources }) => {
                 }}
               >
                 {source.type}
-              </span>
-              <span className={styles.views} style={{ color: COLORS.gray[500], fontFamily: FONTS.body }}>
-                <Eye size={12} />
-                {source.views}
               </span>
               {source.trending && (
                 <span
