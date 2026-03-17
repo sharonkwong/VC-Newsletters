@@ -1,0 +1,7 @@
+requests
+feedparser
+newspaper3k
+lxml_html_clean
+anthropic
+python-dotenv
+beautifulsoup4

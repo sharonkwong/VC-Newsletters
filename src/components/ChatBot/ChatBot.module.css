@@ -1,0 +1,497 @@
+.container {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e5e5;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e5e5;
+  flex-shrink: 0;
+}
+
+.headerIcon {
+  color: #e41d26;
+  flex-shrink: 0;
+}
+
+.headerText {
+  flex: 1;
+}
+
+.expandBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  color: #a3a3a3;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.expandBtn:hover {
+  background-color: #f5f5f5;
+  color: #e41d26;
+}
+
+/* Panel — always visible */
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+}
+
+/* Messages Area */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  min-height: 0;
+}
+
+.messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 2px;
+}
+
+/* Empty / Welcome States */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.emptyIcon {
+  color: #d4d4d4;
+}
+
+.emptyText {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #a3a3a3;
+  line-height: 1.5;
+}
+
+.welcomeState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 1.25rem 0.75rem;
+  text-align: center;
+}
+
+.welcomeIcon {
+  color: #a3a3a3;
+}
+
+.welcomeText {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #6b6b6b;
+  line-height: 1.5;
+}
+
+.welcomeText strong {
+  color: #1a1a1a;
+}
+
+/* Messages */
+.message {
+  max-width: 85%;
+  border-radius: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.userMessage {
+  align-self: flex-end;
+  background: #fff5f5;
+  border: 1px solid #fecaca;
+  color: #1a1a1a;
+}
+
+.assistantMessage {
+  align-self: flex-start;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  color: #1a1a1a;
+}
+
+.messageHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 0.25rem;
+}
+
+.messageAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e5e5e5;
+  color: #525252;
+  flex-shrink: 0;
+}
+
+.userMessage .messageAvatar {
+  background: #e41d26;
+  color: #ffffff;
+}
+
+.messageTime {
+  font-size: 0.6875rem;
+  color: #a3a3a3;
+}
+
+.messageContent {
+  word-wrap: break-word;
+}
+
+/* Markdown rendering in assistant messages */
+.messageContent h1,
+.messageContent h2,
+.messageContent h3,
+.messageContent h4 {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin: 0.5rem 0 0.2rem;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+
+.messageContent h1:first-child,
+.messageContent h2:first-child,
+.messageContent h3:first-child,
+.messageContent h4:first-child {
+  margin-top: 0;
+}
+
+.messageContent p {
+  margin: 0.2rem 0;
+}
+
+.messageContent p:first-child { margin-top: 0; }
+.messageContent p:last-child { margin-bottom: 0; }
+
+.messageContent strong {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.messageContent em {
+  font-style: italic;
+}
+
+.messageContent ul,
+.messageContent ol {
+  margin: 0.35rem 0;
+  padding-left: 1.25rem;
+  display: block;
+}
+
+.messageContent li {
+  margin: 0.15rem 0;
+  display: list-item;
+}
+
+.messageContent li::marker {
+  color: #e41d26;
+}
+
+.messageContent li p {
+  margin: 0;
+  display: inline;
+}
+
+.messageContent code {
+  background: #f0f0f0;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.messageContent pre {
+  background: #f5f5f5;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin: 0.35rem 0;
+  font-size: 0.75rem;
+  display: block;
+}
+
+.messageContent pre code {
+  background: none;
+  padding: 0;
+}
+
+.messageContent a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.messageContent blockquote {
+  border-left: 3px solid #e41d26;
+  margin: 0.35rem 0;
+  padding: 0.25rem 0.75rem;
+  color: #525252;
+  background: #fafafa;
+  border-radius: 0 0.25rem 0.25rem 0;
+  display: block;
+}
+
+.messageContent hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 0.5rem 0;
+  display: block;
+}
+
+.messageContent table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.35rem 0;
+  font-size: 0.75rem;
+  display: table;
+}
+
+.messageContent th,
+.messageContent td {
+  border: 1px solid #e5e5e5;
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+}
+
+.messageContent th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+/* Save Button */
+.saveBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: #a3a3a3;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease;
+  margin-left: auto;
+}
+
+.saveBtn:hover {
+  color: #e41d26;
+}
+
+.saveBtnActive {
+  color: #e41d26;
+}
+
+/* Typing Indicator */
+.typingIndicator {
+  display: flex;
+  gap: 4px;
+  padding: 0.25rem 0;
+}
+
+.typingIndicator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a3a3a3;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.typingIndicator span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typingIndicator span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Input Bar */
+.inputBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border-top: 1px solid #f5f5f5;
+  background: #fafafa;
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  color: #1a1a1a;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.15s ease;
+  min-width: 0;
+}
+
+.input::placeholder {
+  color: #a3a3a3;
+}
+
+.input:focus {
+  border-color: #e41d26;
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sendBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 0.5rem;
+  border: none;
+  background: #e41d26;
+  color: #ffffff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.sendBtn:hover:not(:disabled) {
+  background: #c8101a;
+}
+
+.sendBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ========== Modal (expanded view) ========== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 720px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.modal .header {
+  padding: 1rem 1.5rem;
+}
+
+.modal .panel {
+  height: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.modal .messages {
+  padding: 1rem 1.5rem;
+}
+
+.modal .message {
+  max-width: 75%;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+}
+
+.modal .inputBar {
+  padding: 0.875rem 1.5rem;
+}
+
+.modal .input {
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  color: #a3a3a3;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.closeBtn:hover {
+  background-color: #f5f5f5;
+  color: #e41d26;
+}

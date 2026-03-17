@@ -1,0 +1,76 @@
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 1.25rem;
+}
+
+.tab {
+  padding: 0.625rem 1.25rem;
+  border: none;
+  background: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab:hover {
+  color: #e41d26;
+}
+
+.tabActive {
+  border-bottom-color: #e41d26;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.entity {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  border: 1px solid #f5f5f5;
+  border-radius: 0.5rem;
+  gap: 1rem;
+  transition: background-color 0.15s;
+}
+
+.entity:hover {
+  background-color: #fafafa;
+}
+
+.entityInfo {
+  flex: 1;
+}
+
+.entityName {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+}
+
+.entityDetail {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.relevance {
+  flex-shrink: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}

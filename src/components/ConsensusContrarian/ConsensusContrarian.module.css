@@ -1,0 +1,58 @@
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.columnTitle {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.viewpoint {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: none;
+}
+
+.viewpointTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0 0 0.375rem 0;
+}
+
+.viewpointDesc {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.vcInsight {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.vcInsight p {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
