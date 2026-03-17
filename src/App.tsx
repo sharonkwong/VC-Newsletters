@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Sparkles, Settings, User, Globe } from "lucide-react";
+import { Sparkles, Settings, User, Globe, Mail, Phone } from "lucide-react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import { SummaryView } from "./components/SummaryView/SummaryView";
 import SearchHistory from "./components/SearchHistory/SearchHistory";
@@ -67,7 +67,9 @@ function generateGenericNewsletter(query: string, frequency: string): Newsletter
 export default function App() {
   const [currentSummary, setCurrentSummary] = useState<Newsletter | null>(null);
   const [searchHistory, setSearchHistory] = useState<HistoryItem[]>([]);
+  const [selectedHistoryId, setSelectedHistoryId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTransitioningOut, setIsTransitioningOut] = useState(false);
 
   // Persist frequency overrides per topic
   const getFreqOverrides = (): Record<string, string> => {
@@ -91,6 +93,7 @@ export default function App() {
     return newsletter;
   };
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [tzPickerOpen, setTzPickerOpen] = useState(false);
   const [currentTz, setCurrentTz] = useState(getTimezone());
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -151,16 +154,22 @@ export default function App() {
       };
 
       setSearchHistory((prev) => [historyItem, ...prev.slice(0, 19)]);
+      setSelectedHistoryId(historyItem.id);
       setIsLoading(false);
     }, 1200);
   };
 
   const handleHistorySelect = (item: HistoryItem) => {
     const queryLower = item.topic.toLowerCase();
-    let summary = mockSummaries[queryLower] || generateGenericNewsletter(item.topic, item.frequency.toLowerCase());
-    summary = { ...summary, generatedDate: new Date().toISOString() };
+    const freqRaw = item.frequency.toLowerCase().replace("one-time", "once");
+    let summary = mockSummaries[queryLower] || generateGenericNewsletter(item.topic, freqRaw);
+    const freqLabel = item.frequency.toLowerCase() === "one-time"
+      ? "One-time Research"
+      : `${item.frequency} Updates`;
+    summary = { ...summary, generatedDate: new Date().toISOString(), frequency: freqLabel };
     summary = applyFreqOverride(summary);
     setCurrentSummary(summary);
+    setSelectedHistoryId(item.id);
   };
 
   const handleHistoryDelete = (id: string) => {
@@ -174,7 +183,7 @@ export default function App() {
   const handleHistoryRefresh = (id: string) => {
     const item = searchHistory.find((h) => h.id === id);
     if (item) {
-      handleSearch(item.topic, item.frequency.toLowerCase().replace("-time", ""));
+      handleSearch(item.topic, item.frequency.toLowerCase().replace("one-time", "once"));
     }
   };
 
@@ -253,7 +262,19 @@ export default function App() {
     <div className={styles.app} style={{ backgroundColor: COLORS.secondary }}>
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <div className={styles.brand}>
+          <div
+            className={styles.brand}
+            onClick={() => {
+              if (!currentSummary) return;
+              setIsTransitioningOut(true);
+              setTimeout(() => {
+                setCurrentSummary(null);
+                setSelectedHistoryId(null);
+                setIsTransitioningOut(false);
+              }, 350);
+            }}
+            style={{ cursor: "pointer" }}
+          >
             <div className={styles.logoIcon} style={{ backgroundColor: COLORS.primary }}>
               <Sparkles size={24} color={COLORS.white} />
             </div>
@@ -269,17 +290,37 @@ export default function App() {
             <div className={styles.settingsWrapper} ref={settingsRef}>
               <button
                 className={styles.settingsBtn}
-                onClick={() => { setSettingsOpen(!settingsOpen); setTzPickerOpen(false); }}
+                onClick={() => { setSettingsOpen(!settingsOpen); setTzPickerOpen(false); setProfileOpen(false); }}
                 style={{ color: COLORS.gray[500] }}
               >
                 <Settings size={18} />
               </button>
               {settingsOpen && (
                 <div className={styles.settingsMenu}>
-                  <button className={styles.settingsItem} style={{ color: COLORS.gray[700] }}>
+                  <button
+                    className={styles.settingsItem}
+                    onClick={() => { setProfileOpen(!profileOpen); setTzPickerOpen(false); }}
+                    style={{ color: COLORS.gray[700] }}
+                  >
                     <User size={14} />
                     Profile
                   </button>
+                  {profileOpen && (
+                    <div className={styles.profileCard}>
+                      <div className={styles.profileRow}>
+                        <User size={13} style={{ color: COLORS.primary }} />
+                        <span style={{ color: COLORS.gray[600] }}>Sharon Kwong</span>
+                      </div>
+                      <div className={styles.profileRow}>
+                        <Mail size={13} style={{ color: COLORS.primary }} />
+                        <span style={{ color: COLORS.gray[600] }}>sharonjkwong@gmail.com</span>
+                      </div>
+                      <div className={styles.profileRow}>
+                        <Phone size={13} style={{ color: COLORS.primary }} />
+                        <span style={{ color: COLORS.gray[600] }}>(408) 702-7692</span>
+                      </div>
+                    </div>
+                  )}
                   <button
                     className={styles.settingsItem}
                     onClick={() => setTzPickerOpen(!tzPickerOpen)}
@@ -318,7 +359,7 @@ export default function App() {
         <div className={currentSummary && !isLoading ? styles.gridWithToc : styles.grid}>
           {/* Table of Contents — left column, only when newsletter is shown */}
           {currentSummary && !isLoading && (
-            <div className={styles.tocColumn}>
+            <div className={`${styles.tocColumn} ${isTransitioningOut ? styles.tocColumnOut : ""}`}>
               <TableOfContents newsletter={currentSummary} />
             </div>
           )}
@@ -367,12 +408,14 @@ export default function App() {
             )}
 
             {!isLoading && currentSummary && (
-              <SummaryView
-                summary={currentSummary}
-                onFrequencyChange={handleFrequencyChange}
-                savedNotes={savedNotes}
-                onDeleteNote={handleDeleteNote}
-              />
+              <div className={isTransitioningOut ? styles.fadeOut : styles.fadeIn}>
+                <SummaryView
+                  summary={currentSummary}
+                  onFrequencyChange={handleFrequencyChange}
+                  savedNotes={savedNotes}
+                  onDeleteNote={handleDeleteNote}
+                />
+              </div>
             )}
           </div>
 
@@ -380,6 +423,7 @@ export default function App() {
           <div className={styles.sidebar}>
             <SearchHistory
               history={searchHistory}
+              selectedId={selectedHistoryId}
               onSelect={handleHistorySelect}
               onDelete={handleHistoryDelete}
               onRefresh={handleHistoryRefresh}

@@ -123,24 +123,28 @@ export async function generateNewsletterPPT(newsletter: Newsletter): Promise<voi
   const execSlide = addSlideWithBg(pptx);
   addTitleBar(execSlide, "Executive Summary");
 
+  const bulletCount = newsletter.executiveSummary.length;
+  const availableHeight = 5.8;
+  const bulletSpacing = bulletCount > 1 ? availableHeight / bulletCount : 1.1;
+
   newsletter.executiveSummary.forEach((bullet, i) => {
-    const yStart = 1.2 + i * 0.85;
+    const yStart = 1.2 + i * bulletSpacing;
 
     // Number circle
     execSlide.addShape("ellipse", {
       x: 0.6,
       y: yStart,
-      w: 0.35,
-      h: 0.35,
+      w: 0.38,
+      h: 0.38,
       fill: { color: PRIMARY },
     });
 
     execSlide.addText(`${i + 1}`, {
       x: 0.6,
       y: yStart,
-      w: 0.35,
-      h: 0.35,
-      fontSize: 12,
+      w: 0.38,
+      h: 0.38,
+      fontSize: 13,
       fontFace: "Helvetica",
       bold: true,
       color: WHITE,
@@ -149,14 +153,15 @@ export async function generateNewsletterPPT(newsletter: Newsletter): Promise<voi
     });
 
     execSlide.addText(bullet, {
-      x: 1.15,
+      x: 1.2,
       y: yStart - 0.05,
-      w: 8.2,
-      h: 0.75,
+      w: 10.5,
+      h: bulletSpacing - 0.15,
       fontSize: 13,
       fontFace: "Helvetica",
       color: BLACK,
-      lineSpacingMultiple: 1.2,
+      lineSpacingMultiple: 1.3,
+      valign: "top",
     });
   });
 

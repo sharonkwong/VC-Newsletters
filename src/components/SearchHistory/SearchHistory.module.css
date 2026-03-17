@@ -58,6 +58,14 @@
   background-color: #fafafa;
 }
 
+.itemSelected {
+  background-color: rgba(228, 29, 38, 0.06);
+}
+
+.itemSelected:hover {
+  background-color: rgba(228, 29, 38, 0.1);
+}
+
 .itemInfo {
   flex: 1;
   min-width: 0;

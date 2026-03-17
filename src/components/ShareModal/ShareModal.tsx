@@ -177,7 +177,7 @@ export default function ShareModal({ topic, frequency, newsletter, onClose }: Sh
           <button
             className={styles.copyLinkBtn}
             onClick={handleCopyLink}
-            style={{ color: copied ? COLORS.status.success : COLORS.gray[600] }}
+            style={{ color: copied ? COLORS.primary : COLORS.gray[600] }}
           >
             <Link2 size={14} />
             {copied ? "Copied!" : "Copy link to this newsletter"}

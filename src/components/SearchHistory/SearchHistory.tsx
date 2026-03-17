@@ -6,12 +6,13 @@ import styles from "./SearchHistory.module.css";
 
 interface SearchHistoryProps {
   history: HistoryItem[];
+  selectedId?: string | null;
   onSelect: (item: HistoryItem) => void;
   onDelete: (id: string) => void;
   onRefresh: (id: string) => void;
 }
 
-const SearchHistory: React.FC<SearchHistoryProps> = ({ history, onSelect, onDelete, onRefresh }) => {
+const SearchHistory: React.FC<SearchHistoryProps> = ({ history, selectedId, onSelect, onDelete, onRefresh }) => {
   const sorted = [...history].sort((a, b) => {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
@@ -37,7 +38,7 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ history, onSelect, onDele
           sorted.map((item) => (
             <div
               key={item.id}
-              className={styles.item}
+              className={`${styles.item} ${selectedId === item.id ? styles.itemSelected : ""}`}
               onClick={() => onSelect(item)}
             >
               <div className={styles.itemInfo}>
