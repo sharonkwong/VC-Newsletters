@@ -13,11 +13,10 @@ import {
   FileText,
   FileSpreadsheet,
   Image,
+  Loader2,
+  Check,
 } from "lucide-react";
 import { COLORS, FONTS } from "../../constants/constants";
-import { generateNewsletterPDF } from "../../utils/pdfExport";
-import { generateNewsletterPPT } from "../../utils/pptExport";
-import { generateScreenshot } from "../../utils/screenshotExport";
 import type { Newsletter } from "../../types/types";
 import styles from "./ShareModal.module.css";
 
@@ -48,7 +47,7 @@ interface ShareModalProps {
   onClose: () => void;
 }
 
-export default function ShareModal({ topic, frequency, newsletter, onClose }: ShareModalProps) {
+export default function ShareModal({ topic, frequency, onClose }: ShareModalProps) {
   const [shareEmail, setShareEmail] = useState("");
   const [shareFormat, setShareFormat] = useState<ExportFormat>("pdf");
   const [formatOpen, setFormatOpen] = useState(false);
@@ -59,6 +58,7 @@ export default function ShareModal({ topic, frequency, newsletter, onClose }: Sh
   const [scheduleFormat, setScheduleFormat] = useState<ExportFormat>("pdf");
   const [scheduleFormatOpen, setScheduleFormatOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [sendState, setSendState] = useState<"idle" | "sending" | "sent">("idle");
   const formatRef = useRef<HTMLDivElement>(null);
   const scheduleFormatRef = useRef<HTMLDivElement>(null);
 
@@ -89,14 +89,10 @@ export default function ShareModal({ topic, frequency, newsletter, onClose }: Sh
     const trimmed = shareEmail.trim();
     if (!trimmed || !trimmed.includes("@")) return;
 
-    // Generate the export in selected format
-    if (shareFormat === "pdf") {
-      generateNewsletterPDF(newsletter);
-    } else if (shareFormat === "ppt") {
-      generateNewsletterPPT(newsletter);
-    } else {
-      await generateScreenshot(topic);
-    }
+    setSendState("sending");
+
+    // Simulate sending
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     const record: ShareRecord = {
       email: trimmed,
@@ -112,7 +108,8 @@ export default function ShareModal({ topic, frequency, newsletter, onClose }: Sh
     localStorage.setItem(storageKeyShare, JSON.stringify(updated));
     setShareEmail("");
 
-    alert(`Newsletter "${topic}" (${shareFormat.toUpperCase()}) shared with ${trimmed}`);
+    setSendState("sent");
+    setTimeout(() => setSendState("idle"), 2000);
   };
 
   const handleCopyLink = () => {
@@ -247,11 +244,19 @@ export default function ShareModal({ topic, frequency, newsletter, onClose }: Sh
               <button
                 className={styles.sendBtn}
                 onClick={handleShareSend}
-                disabled={!shareEmail.trim() || !shareEmail.includes("@")}
-                style={{ backgroundColor: COLORS.primary, color: COLORS.white }}
+                disabled={!shareEmail.trim() || !shareEmail.includes("@") || sendState !== "idle"}
+                style={{
+                  backgroundColor: sendState === "sent" ? COLORS.status.success : COLORS.primary,
+                  color: COLORS.white,
+                }}
               >
-                <Send size={14} />
-                Send
+                {sendState === "sending" ? (
+                  <><Loader2 size={14} className={styles.spinner} /> Sending</>
+                ) : sendState === "sent" ? (
+                  <><Check size={14} /> Sent!</>
+                ) : (
+                  <><Send size={14} /> Send</>
+                )}
               </button>
             </div>
 

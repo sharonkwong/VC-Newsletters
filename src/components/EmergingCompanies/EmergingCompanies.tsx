@@ -39,7 +39,7 @@ const defaultTrend = {
 
 const EmergingCompanies: React.FC<EmergingCompaniesProps> = ({ companies }) => {
   return (
-    <SectionCard title="Emerging Companies" icon={<Star size={20} />}>
+    <SectionCard title="Emerging Startups" icon={<Star size={20} />}>
       <div className={styles.grid}>
         {companies.map((company) => {
           const trend = trendConfig[company.mentionTrend] || defaultTrend;

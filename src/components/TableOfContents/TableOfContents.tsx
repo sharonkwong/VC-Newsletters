@@ -19,7 +19,7 @@ export default function TableOfContents({ newsletter }: TableOfContentsProps) {
     { id: "key-themes", label: "Key Themes", show: true },
     { id: "market-landscape", label: "VC Analysis", show: true },
     { id: "competitor-landscape", label: "Competitor Landscape", show: newsletter.competitors.length > 0 },
-    { id: "emerging-companies", label: "Emerging Companies", show: newsletter.emergingCompanies.length > 0 },
+    { id: "emerging-companies", label: "Emerging Startups", show: newsletter.emergingCompanies.length > 0 },
     { id: "consensus-contrarian", label: "Consensus vs. Contrarian", show: true },
     { id: "top-insights", label: "Top Insights", show: newsletter.topPeople.length > 0 || newsletter.topProducts.length > 0 || newsletter.topCompanies.length > 0 },
     { id: "sources", label: "Sources & References", show: true },

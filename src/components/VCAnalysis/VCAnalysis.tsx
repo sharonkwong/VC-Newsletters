@@ -67,7 +67,7 @@ const VCAnalysis: React.FC<VCAnalysisProps> = ({ landscape, currentState, predic
         {/* 3. AI-Predicted Trends */}
         <div className={styles.card}>
           <h4 className={styles.cardTitle} style={{ color: COLORS.primary, fontFamily: FONTS.heading }}>
-            3. AI-Predicted Trends
+            3. Predicted Trends
           </h4>
           <ul className={styles.bulletList}>
             {formatParagraph(predictions, COLORS.gray[600])}

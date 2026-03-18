@@ -195,7 +195,6 @@ IMPORTANT RULES:
 - Keep consensus at 3-4 items, contrarian at 2-3 items
 - Keep topPeople, topProducts, topCompanies at 3-5 each
 - All monetary amounts in standard notation (e.g. "$1.2B")
-- predictions must start with "AI-Generated Predictions: "
 
 CURRENT NEWSLETTER:
 {newsletter_json}

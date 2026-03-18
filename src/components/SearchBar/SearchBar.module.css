@@ -148,6 +148,10 @@
   color: #e41d26 !important;
 }
 
+.chipActive {
+  font-weight: 500;
+}
+
 @media (max-width: 640px) {
   .frequencyButtons {
     display: grid;

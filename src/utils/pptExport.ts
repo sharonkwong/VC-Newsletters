@@ -305,7 +305,7 @@ export async function generateNewsletterPPT(newsletter: Newsletter): Promise<voi
   // ========== SLIDE 6: Emerging Companies ==========
   if (newsletter.emergingCompanies.length > 0) {
     const emSlide = addSlideWithBg(pptx);
-    addTitleBar(emSlide, "Emerging Companies");
+    addTitleBar(emSlide, "Emerging Startups");
 
     newsletter.emergingCompanies.forEach((company, i) => {
       const yStart = 1.2 + i * 1.3;

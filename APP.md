@@ -146,7 +146,7 @@ The prompt instructs Claude to act as a VC analyst and produce:
 - 3-5 recurring themes
 - Market landscape paragraph
 - Current state paragraph
-- AI-generated predictions (explicitly labeled)
+- AI-generated predictions
 - Investment insights paragraph
 - 5-8 competitors with momentum indicators
 - 3-5 emerging companies with signals

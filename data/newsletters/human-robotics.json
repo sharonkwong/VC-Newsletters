@@ -67,7 +67,7 @@
       "publishedDate": "2026-03-08T05:01:01Z"
     },
     {
-      "title": "These robots are coming for the jobs no one wants — and could fill workforce gaps",
+      "title": "These robots are coming for the jobs no one wants \u2014 and could fill workforce gaps",
       "url": "https://www.businessinsider.com/agility-robotics-humanoid-robots-labor-shortage-aging-workforce-2026-3",
       "type": "Business Insider",
       "views": "N/A",
@@ -107,7 +107,7 @@
       "publishedDate": "2026-02-27T12:00:00Z"
     },
     {
-      "title": "Billionaire investor Vinod Khosla wants to 'rethink' capitalism for the AI era — and suggests scrapping taxes for 125 million people",
+      "title": "Billionaire investor Vinod Khosla wants to 'rethink' capitalism for the AI era \u2014 and suggests scrapping taxes for 125 million people",
       "url": "https://www.businessinsider.com/vinod-khosla-ai-taxes-capital-labor-job-losses-billionaires-musk-2026-2",
       "type": "Business Insider",
       "views": "N/A",
@@ -131,7 +131,7 @@
       "publishedDate": "2026-02-18T17:55:37Z"
     },
     {
-      "title": "An MIT roboticist who cofounded bankrupt robot vacuum maker iRobot says Elon Musk’s vision of humanoid robot assistants is ‘pure fantasy thinking’",
+      "title": "An MIT roboticist who cofounded bankrupt robot vacuum maker iRobot says Elon Musk\u2019s vision of humanoid robot assistants is \u2018pure fantasy thinking\u2019",
       "url": "https://finance.yahoo.com/news/mit-roboticist-cofounded-bankrupt-robot-192810042.html",
       "type": "Yahoo Entertainment",
       "views": "N/A",
@@ -181,7 +181,7 @@
   ],
   "landscape": "The human robotics market is experiencing unprecedented investment activity with billion-dollar funding rounds and sky-high valuations, driven by breakthrough foundation models and manufacturing sector labor shortages creating immediate market demand. Industry 5.0 frameworks are emphasizing human-centric workplaces where robots collaborate safely with human workers. Technical approaches are diverging between humanoid robots mimicking human form and specialized robots optimized for specific tasks, with new foundation models like GR00T N1 enabling more generalist capabilities across different robot platforms.",
   "currentState": "The market is in a rapid scaling phase with significant technical and commercial progress across multiple fronts. Major automakers including Toyota, Tesla, and Hyundai are actively deploying humanoid robots in manufacturing settings, while companies like Agility Robotics are expanding commercial deployments at Amazon and logistics operations. Training methodologies are evolving rapidly with NVIDIA's DreamDojo and foundation models enabling robots to learn from human demonstrations. Human-robot collaboration research is advancing safety frameworks and optimization techniques for Industry 5.0 applications.",
-  "predictions": "AI-Generated Predictions: Foundation models will enable more generalist humanoid robots capable of diverse tasks, with specialized applications in manufacturing leading adoption through 2027. Human-robot collaboration safety standards will become industry requirements as deployment scales. Chinese robotics companies will continue rapid capability advances and may capture significant global market share. The market will see consolidation as technical realities separate viable companies from overfunded experiments.",
+  "predictions": "Foundation models will enable more generalist humanoid robots capable of diverse tasks, with specialized applications in manufacturing leading adoption through 2027. Human-robot collaboration safety standards will become industry requirements as deployment scales. Chinese robotics companies will continue rapid capability advances and may capture significant global market share. The market will see consolidation as technical realities separate viable companies from overfunded experiments.",
   "investmentInsights": "The sector presents tremendous opportunity with manufacturing labor shortages creating immediate revenue opportunities for companies with proven deployment capabilities like Agility Robotics and Boston Dynamics. Foundation models like GR00T N1 represent significant technical advances that could accelerate commercialization timelines. However, investors should be cautious of companies pursuing general-purpose humanoid robots without clear commercialization paths, as evidenced by skepticism from robotics experts. Human-robot collaboration research advances provide validation for safer, more practical deployment scenarios.",
   "competitors": [
     {

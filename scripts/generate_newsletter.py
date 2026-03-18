@@ -473,7 +473,6 @@ RULES:
 - contrarian must have 2-3 items.
 - topPeople, topProducts, topCompanies each 3-5 items.
 - sourceRanking must be an array of article numbers (1-indexed) ordered from MOST relevant to LEAST relevant. Include ALL article numbers. This determines display order.
-- predictions paragraph MUST start with "AI-Generated Predictions: ".
 - All monetary amounts should use standard notation (e.g. "$1.2B").
 
 ARTICLES:

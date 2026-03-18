@@ -71,9 +71,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
               <button
                 key={topic}
                 type="button"
-                className={styles.chip}
+                className={`${styles.chip} ${query === topic ? styles.chipActive : ""}`}
                 onClick={() => handleChipClick(topic)}
-                style={{ fontFamily: FONTS.body, color: COLORS.gray[700] }}
+                style={{
+                  fontFamily: FONTS.body,
+                  ...(query === topic
+                    ? { backgroundColor: COLORS.primaryLight, color: COLORS.primary, borderColor: COLORS.primary }
+                    : { color: COLORS.gray[700] }),
+                }}
               >
                 {topic}
               </button>
