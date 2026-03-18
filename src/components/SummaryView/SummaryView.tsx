@@ -15,6 +15,7 @@ import { generateNewsletterPDF } from "../../utils/pdfExport";
 import { generateNewsletterPPT } from "../../utils/pptExport";
 import { generateScreenshot } from "../../utils/screenshotExport";
 import { COLORS, FONTS, FREQUENCY_OPTIONS } from "../../constants/constants";
+import DatePicker from "../DatePicker/DatePicker";
 import type { Newsletter } from "../../types/types";
 import styles from "./SummaryView.module.css";
 
@@ -28,22 +29,32 @@ interface SavedNote {
 interface SummaryViewProps {
   summary: Newsletter;
   onFrequencyChange?: (frequency: string) => void;
+  onScheduledDateChange?: (date: string) => void;
   savedNotes?: SavedNote[];
   onDeleteNote?: (id: string) => void;
 }
 
-export function SummaryView({ summary, onFrequencyChange, savedNotes = [], onDeleteNote }: SummaryViewProps) {
+const SCHEDULABLE_LABELS = ["Weekly Updates", "Monthly Updates", "Yearly Updates"];
+
+export function SummaryView({ summary, onFrequencyChange, onScheduledDateChange, savedNotes = [], onDeleteNote }: SummaryViewProps) {
   const [freqOpen, setFreqOpen] = useState(false);
   const [currentFreq, setCurrentFreq] = useState(summary.frequency);
   const [shareOpen, setShareOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [scheduledDate, setScheduledDate] = useState(summary.nextScheduledDate || "");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const exportRef = useRef<HTMLDivElement>(null);
+
+  const showDatePicker = SCHEDULABLE_LABELS.includes(currentFreq);
 
   useEffect(() => {
     setCurrentFreq(summary.frequency);
   }, [summary.frequency]);
+
+  useEffect(() => {
+    setScheduledDate(summary.nextScheduledDate || "");
+  }, [summary.nextScheduledDate]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -63,6 +74,15 @@ export function SummaryView({ summary, onFrequencyChange, savedNotes = [], onDel
     setCurrentFreq(freqLabel);
     setFreqOpen(false);
     onFrequencyChange?.(value);
+    if (!["weekly", "monthly", "yearly"].includes(value)) {
+      setScheduledDate("");
+      onScheduledDateChange?.("");
+    }
+  };
+
+  const handleDateChange = (date: string) => {
+    setScheduledDate(date);
+    onScheduledDateChange?.(date);
   };
 
   const handleExport = async (format: "pdf" | "ppt" | "screenshot") => {
@@ -121,6 +141,16 @@ export function SummaryView({ summary, onFrequencyChange, savedNotes = [], onDel
               </div>
             )}
           </div>
+
+          {/* Date picker for scheduled frequencies */}
+          {showDatePicker && (
+            <DatePicker
+              value={scheduledDate}
+              onChange={handleDateChange}
+              minDate={new Date().toISOString().split("T")[0]}
+              placeholder="Next scheduled date"
+            />
+          )}
 
           {/* Export dropdown */}
           <div className={styles.exportDropdown} ref={exportRef}>

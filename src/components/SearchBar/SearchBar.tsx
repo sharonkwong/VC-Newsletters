@@ -1,20 +1,33 @@
 import React, { useState } from "react";
 import { Search, Sparkles } from "lucide-react";
 import { COLORS, FONTS, FREQUENCY_OPTIONS, SUGGESTED_TOPICS } from "../../constants/constants";
+import DatePicker from "../DatePicker/DatePicker";
 import styles from "./SearchBar.module.css";
 
 interface SearchBarProps {
-  onSearch: (query: string, frequency: string) => void;
+  onSearch: (query: string, frequency: string, nextScheduledDate?: string) => void;
 }
+
+const SCHEDULABLE_FREQUENCIES = ["weekly", "monthly", "yearly"];
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState("");
   const [frequency, setFrequency] = useState<string>(FREQUENCY_OPTIONS[0].value);
+  const [nextScheduledDate, setNextScheduledDate] = useState<string>("");
+
+  const showDatePicker = SCHEDULABLE_FREQUENCIES.includes(frequency);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      onSearch(query.trim(), frequency);
+      onSearch(query.trim(), frequency, showDatePicker && nextScheduledDate ? nextScheduledDate : undefined);
+    }
+  };
+
+  const handleFrequencyChange = (value: string) => {
+    setFrequency(value);
+    if (!SCHEDULABLE_FREQUENCIES.includes(value)) {
+      setNextScheduledDate("");
     }
   };
 
@@ -76,7 +89,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 key={opt.value}
                 type="button"
                 className={`${styles.freqBtn} ${frequency === opt.value ? styles.freqBtnActive : ""}`}
-                onClick={() => setFrequency(opt.value)}
+                onClick={() => handleFrequencyChange(opt.value)}
                 style={
                   frequency === opt.value
                     ? { backgroundColor: COLORS.primary, color: COLORS.white, borderColor: COLORS.primary }
@@ -86,6 +99,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 {opt.label}
               </button>
             ))}
+            {showDatePicker && (
+              <DatePicker
+                value={nextScheduledDate}
+                onChange={setNextScheduledDate}
+                minDate={new Date().toISOString().split("T")[0]}
+                placeholder="Next scheduled date (optional)"
+              />
+            )}
           </div>
         </div>
 

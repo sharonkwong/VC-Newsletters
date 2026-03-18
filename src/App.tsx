@@ -64,6 +64,31 @@ function generateGenericNewsletter(query: string, frequency: string): Newsletter
   };
 }
 
+function getDefaultNextDate(frequency: string): string | null {
+  if (frequency === "once") return null;
+  const now = new Date();
+  switch (frequency) {
+    case "daily":
+      now.setDate(now.getDate() + 1);
+      break;
+    case "weekly":
+      now.setDate(now.getDate() + 7);
+      break;
+    case "monthly":
+      now.setMonth(now.getMonth() + 1);
+      break;
+    case "yearly":
+      now.setFullYear(now.getFullYear() + 1);
+      break;
+    default:
+      return null;
+  }
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 export default function App() {
   const [currentSummary, setCurrentSummary] = useState<Newsletter | null>(null);
   const [searchHistory, setSearchHistory] = useState<HistoryItem[]>([]);
@@ -84,13 +109,34 @@ export default function App() {
     localStorage.setItem("newsIntelFreqOverrides", JSON.stringify(overrides));
   };
 
+  // Persist scheduled dates per topic
+  const getScheduledDates = (): Record<string, string> => {
+    try {
+      return JSON.parse(localStorage.getItem("newsIntelScheduledDates") || "{}");
+    } catch { return {}; }
+  };
+
+  const saveScheduledDate = (topic: string, date: string) => {
+    const dates = getScheduledDates();
+    if (date) {
+      dates[topic.toLowerCase()] = date;
+    } else {
+      delete dates[topic.toLowerCase()];
+    }
+    localStorage.setItem("newsIntelScheduledDates", JSON.stringify(dates));
+  };
+
   const applyFreqOverride = (newsletter: Newsletter): Newsletter => {
     const overrides = getFreqOverrides();
-    const override = overrides[newsletter.topic.toLowerCase()];
-    if (override) {
-      return { ...newsletter, frequency: override };
-    }
-    return newsletter;
+    const dates = getScheduledDates();
+    const key = newsletter.topic.toLowerCase();
+    const freqOverride = overrides[key];
+    const dateOverride = dates[key];
+    return {
+      ...newsletter,
+      ...(freqOverride ? { frequency: freqOverride } : {}),
+      ...(dateOverride ? { nextScheduledDate: dateOverride } : {}),
+    };
   };
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -122,7 +168,7 @@ export default function App() {
     }
   }, [searchHistory]);
 
-  const handleSearch = (query: string, frequency: string) => {
+  const handleSearch = (query: string, frequency: string, nextScheduledDate?: string) => {
     setIsLoading(true);
 
     setTimeout(() => {
@@ -139,7 +185,13 @@ export default function App() {
       }
 
       // Stamp with current time (ISO) so timezone conversion is accurate
-      summary = { ...summary, generatedDate: new Date().toISOString() };
+      const scheduledDate = nextScheduledDate || getDefaultNextDate(frequency);
+      summary = { ...summary, generatedDate: new Date().toISOString(), nextScheduledDate: scheduledDate };
+
+      // Persist scheduled date
+      if (scheduledDate) {
+        saveScheduledDate(query, scheduledDate);
+      }
 
       // Apply any saved frequency override
       summary = applyFreqOverride(summary);
@@ -195,10 +247,23 @@ export default function App() {
     const displayFreq = newFrequency === "once" ? "One-time" : newFrequency.charAt(0).toUpperCase() + newFrequency.slice(1);
 
     // Update the current summary
-    setCurrentSummary({ ...currentSummary, frequency: freqLabel });
+    const isSchedulable = ["weekly", "monthly", "yearly"].includes(newFrequency);
+    const defaultDate = isSchedulable ? getDefaultNextDate(newFrequency) : null;
+    setCurrentSummary({
+      ...currentSummary,
+      frequency: freqLabel,
+      nextScheduledDate: isSchedulable
+        ? (currentSummary.nextScheduledDate || defaultDate)
+        : null,
+    });
 
     // Persist the override so it survives reload
     saveFreqOverride(currentSummary.topic, freqLabel);
+    if (!isSchedulable) {
+      saveScheduledDate(currentSummary.topic, "");
+    } else if (!currentSummary.nextScheduledDate && defaultDate) {
+      saveScheduledDate(currentSummary.topic, defaultDate);
+    }
 
     // Update the matching history item
     setSearchHistory((prev) => {
@@ -210,6 +275,12 @@ export default function App() {
       localStorage.setItem("newsIntelHistory", JSON.stringify(updated));
       return updated;
     });
+  };
+
+  const handleScheduledDateChange = (date: string) => {
+    if (!currentSummary) return;
+    setCurrentSummary({ ...currentSummary, nextScheduledDate: date || null });
+    saveScheduledDate(currentSummary.topic, date);
   };
 
   interface SavedNote {
@@ -412,6 +483,7 @@ export default function App() {
                 <SummaryView
                   summary={currentSummary}
                   onFrequencyChange={handleFrequencyChange}
+                  onScheduledDateChange={handleScheduledDateChange}
                   savedNotes={savedNotes}
                   onDeleteNote={handleDeleteNote}
                 />

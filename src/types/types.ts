@@ -42,6 +42,7 @@ export interface Newsletter {
   generatedDate: string;
   updatedDate: string | null;
   frequency: string;
+  nextScheduledDate?: string | null;
   executiveSummary: string[];
   themes: string[];
   sources: Source[];
@@ -63,6 +64,7 @@ export interface HistoryItem {
   topic: string;
   date: string;
   frequency: string;
+  nextScheduledDate?: string | null;
 }
 
 export interface ChatMessage {
